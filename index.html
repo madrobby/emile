@@ -4,6 +4,9 @@
 <div id="test2" style="border:0px solid blue;position:absolute;left:0px;top:400px;background:#0f0">test</div>
 
 <script>
-  emile.anim('test1', 'left:100px;padding-bottom:100px', { duration: 4000 });
-  emile.anim('test2', 'left:300px;padding:10px;border:50px solid blue');
+  emile.anim('test2', 'left:300px;padding:10px;border:50px solid blue', {
+    after: function(){
+      emile.anim('test1', 'left:100px;padding-bottom:100px', { duration: 4000 });
+    }
+  });
 </script>

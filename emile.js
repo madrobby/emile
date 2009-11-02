@@ -9,16 +9,6 @@
     'maxWidth minHeight minWidth opacity outlineColor outlineOffset outlineWidth paddingBottom paddingLeft '+
     'paddingRight paddingTop right textIndent top width wordSpacing zIndex').split(' ');
   
-  function $(element){
-    return typeof element == 'string' ?
-      document.getElementById(element) : element;
-  }
-
-  function css(element){
-    return element.currentStyle ? element.currentStyle :
-      document.defaultView.getComputedStyle(element, null);
-  }
-
   function parse(value){
     var v = parseFloat(value), u = value.replace(/\d/g,'');
     return { value: isNaN(v) ? u : v, unit: isNaN(v) ? 'color' : u };
@@ -33,25 +23,22 @@
     return rules;
   }
 
-  function anim(element, style, opts){
-    element = $(element);
-    opts = opts || { duration: 200 };
-    var target = normalize(style), c = css(element), prop, current = {}, 
-      start = (new Date).getTime(), dur = opts.duration, finish = start + dur, interval;
+  function anim(el, style, opts){
+    el = typeof el == 'string' ? document.getElementById(el) : el;
+    opts = opts || {};
+    var target = normalize(style), c = el.currentStyle ? el.currentStyle : document.defaultView.getComputedStyle(el, null),
+      prop, current = {}, start = (new Date).getTime(), dur = opts.duration||200, finish = start+dur, interval;
     for(prop in target) current[prop] = parse(c[prop]);
     interval = setInterval(function(){
-      var t = target, cur = current;
-      var time = (new Date).getTime(), delta = (time-start)/dur, value;
-      if(time>finish) delta = 1;
+      var t = target, cur = current, time = (new Date).getTime(), 
+        delta = time>finish ? 1 : (time-start)/dur;
       for(prop in target) {
         if(target[prop].unit == 'color') {
           // todo
-        } else {
-          value = ((target[prop].value-current[prop].value)*delta).toFixed(3);
-          element.style[prop] = value + target[prop].unit;
-        }
+        } else
+          el.style[prop] = ((target[prop].value-current[prop].value)*delta).toFixed(3) + target[prop].unit;
       }
-      if(time>finish) clearInterval(interval);
+      if(time>finish) { clearInterval(interval); opts.after && opts.after(); }
     },10);
   }
 
