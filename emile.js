@@ -15,7 +15,7 @@
   }
 
   function css(element){
-    return element.currrentStyle ? element.currentStyle :
+    return element.currentStyle ? element.currentStyle :
       document.defaultView.getComputedStyle(element, null);
   }
 
@@ -40,11 +40,16 @@
       start = (new Date).getTime(), dur = opts.duration, finish = start + dur, interval;
     for(prop in target) current[prop] = parse(c[prop]);
     interval = setInterval(function(){
+      var t = target, cur = current;
       var time = (new Date).getTime(), delta = (time-start)/dur, value;
       if(time>finish) delta = 1;
       for(prop in target) {
-        value = ((target[prop].value-current[prop].value)*delta).toFixed(3);
-        element.style[prop] = value + target[prop].unit;
+        if(target[prop].unit == 'color') {
+          // todo
+        } else {
+          value = ((target[prop].value-current[prop].value)*delta).toFixed(3);
+          element.style[prop] = value + target[prop].unit;
+        }
       }
       if(time>finish) clearInterval(interval);
     },10);
