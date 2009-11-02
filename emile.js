@@ -8,7 +8,7 @@
     'fontWeight height left letterSpacing lineHeight marginBottom marginLeft marginRight marginTop maxHeight '+
     'maxWidth minHeight minWidth opacity outlineColor outlineOffset outlineWidth paddingBottom paddingLeft '+
     'paddingRight paddingTop right textIndent top width wordSpacing zIndex').split(' ');
-  
+
   function parse(value){
     var v = parseFloat(value), u = value.replace(/\d/g,'');
     return { value: isNaN(v) ? u : v, unit: isNaN(v) ? 'color' : u };
@@ -22,8 +22,8 @@
       if(v = css[props[i]]) rules[props[i]] = parse(v);
     return rules;
   }
-
-  function anim(el, style, opts){
+  
+  (object||window)[emile] = function(el, style, opts){
     el = typeof el == 'string' ? document.getElementById(el) : el;
     opts = opts || {};
     var target = normalize(style), comp = el.currentStyle ? el.currentStyle : document.defaultView.getComputedStyle(el, null),
@@ -31,15 +31,12 @@
     for(prop in target) current[prop] = parse(comp[prop]);
     interval = setInterval(function(){
       var time = (new Date).getTime(), delta = time>finish ? 1 : (time-start)/dur;
-      for(prop in target) {
+      for(prop in target)
         if(target[prop].unit == 'color') {
           // todo
         } else
-          el.style[prop] = ((target[prop].value-current[prop].value)*delta).toFixed(3) + target[prop].unit;
-      }
-      if(time>finish) { clearInterval(interval); opts.after && opts.after(); }
+          el.style[prop] = (current[prop].value+(target[prop].value-current[prop].value)*delta).toFixed(3) + target[prop].unit;
+      time>finish && clearInterval(interval) || opts.after && opts.after();
     },10);
   }
-
-  (object||window)[emile] = { anim: anim };
 })('emile');
