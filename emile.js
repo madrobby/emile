@@ -23,7 +23,7 @@
   }
   
   function color(source,target,pos){
-    var i = 2, j, c, v = [], r = [];
+    var i = 2, j, c, tmp, v = [], r = [];
     while(i--) 
       if(arguments[i][0]=='r'){
         c = arguments[i].match(/\d+/g); j=3; while(j--) v.push(parseInt(c[j]));
@@ -38,14 +38,15 @@
     el = typeof el == 'string' ? document.getElementById(el) : el;
     opts = opts || {};
     var target = normalize(style), comp = el.currentStyle ? el.currentStyle : document.defaultView.getComputedStyle(el, null),
-      prop, current = {}, start = (new Date).getTime(), dur = opts.duration||200, finish = start+dur, interval;
+      prop, current = {}, start = (new Date).getTime(), dur = opts.duration||200, finish = start+dur, interval,
+      easing = opts.easing || function(pos){ return (-Math.cos(pos*Math.PI)/2) + 0.5; };
     for(prop in target) current[prop] = parse(comp[prop]);
     interval = setInterval(function(){
-      var time = (new Date).getTime(), delta = time>finish ? 1 : (time-start)/dur;
+      var time = (new Date).getTime(), pos = time>finish ? 1 : (time-start)/dur;
       for(prop in target)
         el.style[prop] = target[prop].unit == 'color' ?
-          color(current[prop].value,target[prop].value,delta) : 
-          (current[prop].value+(target[prop].value-current[prop].value)*delta).toFixed(3) + target[prop].unit;
+          color(current[prop].value,target[prop].value,easing(pos)) : 
+          (current[prop].value+(target[prop].value-current[prop].value)*easing(pos)).toFixed(3) + target[prop].unit;
       if(time>finish) { clearInterval(interval); opts.after && opts.after(); }
     },10);
   }

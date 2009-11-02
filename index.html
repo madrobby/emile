@@ -7,7 +7,21 @@
   emile('test2', 'left:300px;padding:10px;border:50px solid #ff0000', {
     duration: 500,
     after: function(){
-      emile('test1', 'background:#0f0;left:100px;padding-bottom:100px;opacity:1', { duration: 4000 });
+      emile('test1', 'background:#0f0;left:100px;padding-bottom:100px;opacity:1', { 
+        duration: 4000, easing: bounce
+      });
     }
   });
+  
+  function bounce(pos) {
+    if (pos < (1/2.75)) {
+        return (7.5625*pos*pos);
+    } else if (pos < (2/2.75)) {
+        return (7.5625*(pos-=(1.5/2.75))*pos + .75);
+    } else if (pos < (2.5/2.75)) {
+        return (7.5625*(pos-=(2.25/2.75))*pos + .9375);
+    } else {
+        return (7.5625*(pos-=(2.625/2.75))*pos + .984375);
+    }
+  }
 </script>
