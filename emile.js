@@ -26,12 +26,11 @@
   function anim(el, style, opts){
     el = typeof el == 'string' ? document.getElementById(el) : el;
     opts = opts || {};
-    var target = normalize(style), c = el.currentStyle ? el.currentStyle : document.defaultView.getComputedStyle(el, null),
+    var target = normalize(style), comp = el.currentStyle ? el.currentStyle : document.defaultView.getComputedStyle(el, null),
       prop, current = {}, start = (new Date).getTime(), dur = opts.duration||200, finish = start+dur, interval;
-    for(prop in target) current[prop] = parse(c[prop]);
+    for(prop in target) current[prop] = parse(comp[prop]);
     interval = setInterval(function(){
-      var t = target, cur = current, time = (new Date).getTime(), 
-        delta = time>finish ? 1 : (time-start)/dur;
+      var time = (new Date).getTime(), delta = time>finish ? 1 : (time-start)/dur;
       for(prop in target) {
         if(target[prop].unit == 'color') {
           // todo
