@@ -2,7 +2,7 @@
 // Licensed under the terms of the MIT license.
 
 (function(emile, object){
-  var fx = [], parseEl = document.createElement('div'),
+  var parseEl = document.createElement('div'),
     props = ('backgroundColor borderBottomColor borderBottomWidth borderLeftColor borderLeftWidth '+
     'borderRightColor borderRightWidth borderSpacing borderTopColor borderTopWidth bottom color fontSize '+
     'fontWeight height left letterSpacing lineHeight marginBottom marginLeft marginRight marginTop maxHeight '+
@@ -19,13 +19,6 @@
       document.defaultView.getComputedStyle(element, null);
   }
 
-  function frame(){
-    var i = fx.length, prop;
-    while(--i)
-      for(prop in fx[i].target)
-        fx[i].element.style.cssText += ';' + fx[i].target
-  }
-  
   function parse(value){
     var v = parseFloat(value), u = value.replace(/\d/g,'');
     return { value: isNaN(v) ? u : v, unit: isNaN(v) ? 'color' : u };
@@ -40,13 +33,21 @@
     return rules;
   }
 
-  function anim(element, style, options){
+  function anim(element, style, opts){
     element = $(element);
-    var target = normalize(style);
-    var c = css(element), prop, current = {};
+    opts = opts || { duration: 200 };
+    var target = normalize(style), c = css(element), prop, current = {}, 
+      start = (new Date).getTime(), dur = opts.duration, finish = start + dur, interval;
     for(prop in target) current[prop] = parse(c[prop]);
-    fx.push({ element: element, current: current, target: target });
-    frame();
+    interval = setInterval(function(){
+      var time = (new Date).getTime(), delta = (time-start)/dur, value;
+      if(time>finish) delta = 1;
+      for(prop in target) {
+        value = ((target[prop].value-current[prop].value)*delta).toFixed(3);
+        element.style[prop] = value + target[prop].unit;
+      }
+      if(time>finish) clearInterval(interval);
+    },10);
   }
 
   (object||window)[emile] = { anim: anim };

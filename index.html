@@ -1,8 +1,9 @@
 <script src="emile.js"></script>
 
-<div id="test" style="position:absolute;left:0px;background:#f00">test</div>
-
+<div id="test1" style="position:absolute;left:0px;background:#f00">test</div>
+<div id="test2" style="position:absolute;left:0px;top:400px;background:#0f0">test</div>
 
 <script>
-  emile.anim('test', 'padding:20px;border:0px solid red');
+  emile.anim('test1', 'left:100px;padding-bottom:100px', { duration: 4000 });
+  emile.anim('test2', 'left:300px;padding:10px;border:50px solid blue');
 </script>
