@@ -1,12 +1,13 @@
 <script src="emile.js"></script>
 
 <div id="test1" style="position:absolute;left:0px;background:#f00;opacity:0">test</div>
-<div id="test2" style="border:0px solid blue;position:absolute;left:0px;top:400px;background:#0f0">test</div>
+<div id="test2" style="border:0px solid #00ff00;position:absolute;left:0px;top:400px;background:#0f0">test</div>
 
 <script>
-  emile('test2', 'left:300px;padding:10px;border:50px solid blue', {
+  emile('test2', 'left:300px;padding:10px;border:50px solid #ff0000', {
+    duration: 500,
     after: function(){
-      emile('test1', 'left:100px;padding-bottom:100px;opacity:1', { duration: 4000 });
+      emile('test1', 'background:#0f0;left:100px;padding-bottom:100px;opacity:1', { duration: 4000 });
     }
   });
 </script>

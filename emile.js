@@ -10,17 +10,28 @@
     'paddingRight paddingTop right textIndent top width wordSpacing zIndex').split(' ');
 
   function parse(value){
-    var v = parseFloat(value), u = value.replace(/\d/g,'');
+    var v = parseFloat(value), u = value.replace(/^[\d\.]+/,'');
     return { value: isNaN(v) ? u : v, unit: isNaN(v) ? 'color' : u };
   }
 
   function normalize(style){
-    var css, rules = {}, i, v;
+    var css, rules = {}, i = props.length, v;
     parseEl.innerHTML = '<div style="'+style+'"></div>';
     css = parseEl.childNodes[0].style;
-    for(i=0;i<props.length;i++) 
-      if(v = css[props[i]]) rules[props[i]] = parse(v);
+    while(i--) if(v = css[props[i]]) rules[props[i]] = parse(v);
     return rules;
+  }
+  
+  function color(source,target,pos){
+    var i = 2, j, c, v = [], r = [];
+    while(i--) 
+      if(arguments[i][0]=='r'){
+        c = arguments[i].match(/\d+/g); j=3; while(j--) v.push(parseInt(c[j]));
+      } else {
+        c = arguments[i].substr(1); j=3; while(j--) v.push(parseInt(c.substr(j*2,2), 16));
+      }
+    j=3; while(j--) { tmp = ~~(v[j+3]+(v[j]-v[j+3])*pos); r.push(tmp<0?0:tmp>255?255:tmp); }
+    return 'rgb('+r.join(',')+')';
   }
   
   (object||window)[emile] = function(el, style, opts){
@@ -32,11 +43,10 @@
     interval = setInterval(function(){
       var time = (new Date).getTime(), delta = time>finish ? 1 : (time-start)/dur;
       for(prop in target)
-        if(target[prop].unit == 'color') {
-          // todo
-        } else
-          el.style[prop] = (current[prop].value+(target[prop].value-current[prop].value)*delta).toFixed(3) + target[prop].unit;
-      time>finish && clearInterval(interval) || opts.after && opts.after();
+        el.style[prop] = target[prop].unit == 'color' ?
+          color(current[prop].value,target[prop].value,delta) : 
+          (current[prop].value+(target[prop].value-current[prop].value)*delta).toFixed(3) + target[prop].unit;
+      if(time>finish) { clearInterval(interval); opts.after && opts.after(); }
     },10);
   }
 })('emile');
