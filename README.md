@@ -8,7 +8,7 @@
 * Easing and callbacks
 * Less than 50 lines of code
 
-Get updates on Twitter: http://twitter.com/emilejs
+Get updates on Twitter: <http://twitter.com/emilejs>
 
 ### Targeted platforms ###
 
@@ -23,4 +23,4 @@ Get updates on Twitter: http://twitter.com/emilejs
 ### License ###
 
 Émile is is licensed under the terms of the MIT License, see the included MIT-LICENSE file.
-Émile borrows its name from http://en.wikipedia.org/wiki/Émile_Cohl.
+Émile borrows its name from <http://en.wikipedia.org/wiki/Émile_Cohl>.
