@@ -28,7 +28,7 @@
       if(arguments[i][0]=='r'){
         c = arguments[i].match(/\d+/g); while(j--) v.push(parseInt(c[j]));
       } else while(j--) v.push(parseInt(c.substr(1+j*2,2), 16));
-    j=3; while(j--) { tmp = ~~(v[j+3]+(v[j]-v[j+3])*pos); r.push(tmp<0?0:tmp>255?255:tmp); }
+    while(j--) { tmp = ~~(v[j+3]+(v[j]-v[j+3])*pos); r.push(tmp<0?0:tmp>255?255:tmp); }
     return 'rgb('+r.join(',')+')';
   }
   
