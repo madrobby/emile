@@ -1,7 +1,7 @@
 // emile.js (c) 2009 Thomas Fuchs
 // Licensed under the terms of the MIT license.
 
-(function(emile, object){
+(function(emile, container){
   var parseEl = document.createElement('div'),
     props = ('backgroundColor borderBottomColor borderBottomWidth borderLeftColor borderLeftWidth '+
     'borderRightColor borderRightWidth borderSpacing borderTopColor borderTopWidth bottom color fontSize '+
@@ -32,7 +32,7 @@
     return 'rgb('+r.join(',')+')';
   }
   
-  (object||window)[emile] = function(el, style, opts){
+  container[emile] = function(el, style, opts){
     el = typeof el == 'string' ? document.getElementById(el) : el;
     opts = opts || {};
     var target = normalize(style), comp = el.currentStyle ? el.currentStyle : document.defaultView.getComputedStyle(el, null),
@@ -48,4 +48,4 @@
       if(time>finish) { clearInterval(interval); opts.after && opts.after(); }
     },10);
   }
-})('emile');
+})('emile', this);
