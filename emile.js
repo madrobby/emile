@@ -24,12 +24,10 @@
   
   function color(source,target,pos){
     var i = 2, j, c, tmp, v = [], r = [];
-    while(i--) 
+    while(j=3,i--)
       if(arguments[i][0]=='r'){
-        c = arguments[i].match(/\d+/g); j=3; while(j--) v.push(parseInt(c[j]));
-      } else {
-        c = arguments[i].substr(1); j=3; while(j--) v.push(parseInt(c.substr(j*2,2), 16));
-      }
+        c = arguments[i].match(/\d+/g); while(j--) v.push(parseInt(c[j]));
+      } else while(j--) v.push(parseInt(c.substr(1+j*2,2), 16));
     j=3; while(j--) { tmp = ~~(v[j+3]+(v[j]-v[j+3])*pos); r.push(tmp<0?0:tmp>255?255:tmp); }
     return 'rgb('+r.join(',')+')';
   }
