@@ -3,11 +3,11 @@
 
 (function(emile, container){
   var parseEl = document.createElement('div'),
-    props = ('backgroundColor borderBottomColor borderBottomWidth borderLeftColor borderLeftWidth '+
+    props = 'backgroundColor borderBottomColor borderBottomWidth borderLeftColor borderLeftWidth '+
     'borderRightColor borderRightWidth borderSpacing borderTopColor borderTopWidth bottom color fontSize '+
     'fontWeight height left letterSpacing lineHeight marginBottom marginLeft marginRight marginTop maxHeight '+
     'maxWidth minHeight minWidth opacity outlineColor outlineOffset outlineWidth paddingBottom paddingLeft '+
-    'paddingRight paddingTop right textIndent top width wordSpacing zIndex').split(' ');
+    'paddingRight paddingTop right textIndent top width wordSpacing zIndex'.split(' ');
 
   function parse(value){
     var v = parseFloat(value), u = value.replace(/^[\d\.]+/,'');
@@ -35,12 +35,12 @@
   container[emile] = function(el, style, opts){
     el = typeof el == 'string' ? document.getElementById(el) : el;
     opts = opts || {};
-    var target = normalize(style), comp = el.currentStyle ? el.currentStyle : document.defaultView.getComputedStyle(el, null),
-      prop, current = {}, start = (new Date).getTime(), dur = opts.duration||200, finish = start+dur, interval,
+    var target = normalize(style), comp = el.currentStyle ? el.currentStyle : getComputedStyle(el, null),
+      prop, current = {}, start = +new Date, dur = opts.duration||200, finish = start+dur, interval,
       easing = opts.easing || function(pos){ return (-Math.cos(pos*Math.PI)/2) + 0.5; };
     for(prop in target) current[prop] = parse(comp[prop]);
     interval = setInterval(function(){
-      var time = (new Date).getTime(), pos = time>finish ? 1 : (time-start)/dur;
+      var time = +new Date, pos = time>finish ? 1 : (time-start)/dur;
       for(prop in target)
         el.style[prop] = target[prop].unit == 'color' ?
           color(current[prop].value,target[prop].value,easing(pos)) : 
