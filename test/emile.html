@@ -1,24 +1,32 @@
-<script src="../emile.js"></script>
-<script src="evidence.js"></script>
-
-<div id="test_basic" style="position:absolute;left:0px;">test1</div>
-
-<script>
-  Evidence.TestCase.extend('ÉmileTest', {
-    
-    testBasicAnimation: function(){
-      var element = document.getElementById('test_basic'), self = this;
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>Émile unit tests</title>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  <script src="../emile.js"></script>
+  <script src="evidence.js"></script>
+</head>
+<body>
+  <div id="test_basic" style="position:absolute;left:0px;">test1</div>
+  <script>
+    Evidence.TestCase.extend('ÉmileTest', {
       
-      this.assertEqual('0px', element.style.left);
-      emile(element, 'left:300px');
-      this.assertEqual('0px', element.style.left);
-      
-      this.pause();
-      setTimeout(function(){
-        self.resume(function(){
-          self.assertEqual('300px', element.style.left);
-        });
-      }, 1500);
-    }
-  });
-</script>
+      testBasicAnimation: function(testcase){
+        var element = document.getElementById('test_basic');
+        
+        testcase.assertEqual('0px', element.style.left);
+        emile(element, 'left:300px');
+        testcase.assertEqual('0px', element.style.left);
+        
+        testcase.pause();
+        setTimeout(function(){
+          testcase.resume(function(){
+            testcase.assertEqual('300px', element.style.left);
+          });
+        }, 1500);
+      }
+    });
+  </script>
+</body>
+</html>
