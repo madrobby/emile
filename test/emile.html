@@ -1,0 +1,24 @@
+<script src="../emile.js"></script>
+<script src="evidence.js"></script>
+
+<div id="test_basic" style="position:absolute;left:0px;">test1</div>
+
+<script>
+  Evidence.TestCase.extend('ÉmileTest', {
+    
+    testBasicAnimation: function(){
+      var element = document.getElementById('test_basic'), self = this;
+      
+      this.assertEqual('0px', element.style.left);
+      emile(element, 'left:300px');
+      this.assertEqual('0px', element.style.left);
+      
+      this.pause();
+      setTimeout(function(){
+        self.resume(function(){
+          self.assertEqual('300px', element.style.left);
+        });
+      }, 1500);
+    }
+  });
+</script>
