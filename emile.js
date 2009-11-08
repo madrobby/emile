@@ -3,11 +3,11 @@
 
 (function(emile, container){
   var parseEl = document.createElement('div'),
-    props = 'backgroundColor borderBottomColor borderBottomWidth borderLeftColor borderLeftWidth '+
+    props = ('backgroundColor borderBottomColor borderBottomWidth borderLeftColor borderLeftWidth '+
     'borderRightColor borderRightWidth borderSpacing borderTopColor borderTopWidth bottom color fontSize '+
     'fontWeight height left letterSpacing lineHeight marginBottom marginLeft marginRight marginTop maxHeight '+
     'maxWidth minHeight minWidth opacity outlineColor outlineOffset outlineWidth paddingBottom paddingLeft '+
-    'paddingRight paddingTop right textIndent top width wordSpacing zIndex'.split(' ');
+    'paddingRight paddingTop right textIndent top width wordSpacing zIndex').split(' ');
 
   function parse(value){
     var v = parseFloat(value), u = value.replace(/^[\d\.]+/,'');
