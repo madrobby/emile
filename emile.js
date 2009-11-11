@@ -21,17 +21,21 @@
     while(i--) if(v = css[props[i]]) rules[props[i]] = parse(v);
     return rules;
   }
-  
+
+  function s(str, p, c){ return str.substr(p,c||1); }
   function color(source,target,pos){
     var i = 2, j, c, tmp, v = [], r = [];
-    while(j=3,i--)
-      if(arguments[i][0]=='r'){
-        c = arguments[i].match(/\d+/g); while(j--) v.push(parseInt(c[j]));
-      } else while(j--) v.push(parseInt(c.substr(1+j*2,2), 16));
+    while(j=3,c=arguments[i-1],i--)
+      if(s(c,0)=='r') { 
+        c = c.match(/\d+/g); while(j--) v.push(~~c[j]); 
+      } else {
+        if(c.length==4) c='#'+s(c,1)+s(c,1)+s(c,2)+s(c,2)+s(c,3)+s(c,3);
+        while(j--) v.push(parseInt(s(c,1+j*2,2), 16));
+      }
     while(j--) { tmp = ~~(v[j+3]+(v[j]-v[j+3])*pos); r.push(tmp<0?0:tmp>255?255:tmp); }
     return 'rgb('+r.join(',')+')';
   }
-  
+
   container[emile] = function(el, style, opts){
     el = typeof el == 'string' ? document.getElementById(el) : el;
     opts = opts || {};
@@ -43,7 +47,7 @@
       var time = +new Date, pos = time>finish ? 1 : (time-start)/dur;
       for(prop in target)
         el.style[prop] = target[prop].unit == 'color' ?
-          color(current[prop].value,target[prop].value,easing(pos)) : 
+          color(current[prop].value,target[prop].value,easing(pos)) :
           (current[prop].value+(target[prop].value-current[prop].value)*easing(pos)).toFixed(3) + target[prop].unit;
       if(time>finish) { clearInterval(interval); opts.after && opts.after(); }
     },10);
