@@ -10,7 +10,7 @@
     'paddingRight paddingTop right textIndent top width wordSpacing zIndex').split(' ');
 
   function parse(value){
-    var v = parseFloat(value), u = value.replace(/^[\d\.]+/,'');
+    var v = parseFloat(value), u = value.replace(/^[\-\d\.]+/,'');
     return { value: isNaN(v) ? u : v, unit: isNaN(v) ? 'color' : u };
   }
 

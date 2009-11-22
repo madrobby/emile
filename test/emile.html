@@ -9,6 +9,7 @@
 </head>
 <body>
   <div id="test_basic" style="position:absolute;left:0px;">test1</div>
+  <div id="test_with_negative_value" style="position:absolute;left:-20px;">test2</div>
   <script>
     Evidence.TestCase.extend('ÉmileTest', {
       
@@ -16,7 +17,7 @@
         var element = document.getElementById('test_basic');
         
         testcase.assertEqual('0px', element.style.left);
-        emile(element, 'left:300px');
+        emile(element, 'left:300px', {duration: 1});
         testcase.assertEqual('0px', element.style.left);
         
         testcase.pause();
@@ -24,7 +25,22 @@
           testcase.resume(function(){
             testcase.assertEqual('300px', element.style.left);
           });
-        }, 1500);
+        }, 10);
+      },
+      
+      testAnimationWithNegativeValue: function(testcase) {
+        var element = document.getElementById('test_with_negative_value');
+        testcase.assertEqual('-20px', element.style.left);
+        emile(element, 'left:-10px', {duration: 1});
+        testcase.assertEqual('-20px', element.style.left);
+        
+        testcase.pause();
+        setTimeout(function(){
+          testcase.resume(function(){
+            testcase.assertEqual('-10px', element.style.left);
+          });
+        }, 10);
+        
       }
     });
   </script>
