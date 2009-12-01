@@ -9,9 +9,9 @@
     'maxWidth minHeight minWidth opacity outlineColor outlineOffset outlineWidth paddingBottom paddingLeft '+
     'paddingRight paddingTop right textIndent top width wordSpacing zIndex').split(' ');
 
-  function parse(value){
-    var v = parseFloat(value), u = value.replace(/^[\-\d\.]+/,'');
-    return { value: isNaN(v) ? u : v, unit: isNaN(v) ? 'color' : u };
+  function parse(prop){
+    var p = parseFloat(prop), q = prop.replace(/^[\-\d\.]+/,'');
+    return isNaN(p) ? { v: q, f: color, u: ''} : { v: p, f: lerp, u: q };
   }
 
   function normalize(style){
@@ -35,6 +35,9 @@
     while(j--) { tmp = ~~(v[j+3]+(v[j]-v[j+3])*pos); r.push(tmp<0?0:tmp>255?255:tmp); }
     return 'rgb('+r.join(',')+')';
   }
+  function lerp(source,target,pos){
+    return (source+(target-source)*pos).toFixed(3);  
+  }
 
   container[emile] = function(el, style, opts){
     el = typeof el == 'string' ? document.getElementById(el) : el;
@@ -46,9 +49,7 @@
     interval = setInterval(function(){
       var time = +new Date, pos = time>finish ? 1 : (time-start)/dur;
       for(prop in target)
-        el.style[prop] = target[prop].unit == 'color' ?
-          color(current[prop].value,target[prop].value,easing(pos)) :
-          (current[prop].value+(target[prop].value-current[prop].value)*easing(pos)).toFixed(3) + target[prop].unit;
+        el.style[prop] = target[prop].f(current[prop].v,target[prop].v,easing(pos)) + target[prop].u;
       if(time>finish) { clearInterval(interval); opts.after && opts.after(); }
     },10);
   }
