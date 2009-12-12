@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Slide Example</title>
+		<meta name="viewport" content="width=320, user-scalable=no">
+		<style type="text/css" media="screen">
+			body {
+				margin:0;
+				padding:0;
+				background:#000;
+			}
+			#container {
+				overflow:hidden;
+				position:absolute;
+				left:0;
+				top:0;
+				width:320px;
+				height:480px;
+			}
+			#card {
+				position:absolute;
+				left:0;
+				top:0;
+				width:320px;
+				height:480px;
+				background:#fff;
+			}
+			h1 {
+				text-align:center;
+			}
+			button {
+				display:block;
+				font-size:2em;
+				width:280px;
+				margin:0 auto 20px auto;
+			}
+		</style>
+	</head>
+	<body>
+		<div id="container">
+			<div id="card">
+				<h1>Slip'n'Slide Demo!</h1>
+				<button onclick="emile('card', 'left:-320px', {duration: 800});">slide left</button>
+				<button onclick="emile('card', 'left:640px', {duration: 800});">slide right</button>
+				<button onclick="emile('card', 'top:-480px', {duration: 800});">slide up</button>
+				<button onclick="emile('card', 'top:960px', {duration: 800});">slide down</button>
+			</div>
+		</div>
+		<script src="../emile.min.js" type="text/javascript" charset="utf-8"></script>
+	</body>
+</html>
