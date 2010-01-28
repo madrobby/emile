@@ -23,6 +23,23 @@ Also see the video of my presentation at Fronteers 2009:
 * Opera 9.25 and higher
 * Chrome 1.0 and higher
 
+### Documentation ###
+
+One method:
+
+    emile(element, style, options)
+
+**Parameters**
+
+   * element (id | element) - element to which the animation will be applied
+   * style (String) - style which will be applied after the animation is finished
+      * for some properties you'll need to define defaults on your page's css
+   * options (Object) - the following options are available
+      * duration (Number) - duration of the animation in milliseconds
+      * after (Function) - a function which will be executed after the animation is finished
+      * easing (Function) - easing function for the animation. Receives one argument pos which indicates position in time between animation's start and end
+
+
 ### License ###
 
 Émile is is licensed under the terms of the MIT License, see the included MIT-LICENSE file.
