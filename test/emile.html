@@ -10,6 +10,7 @@
 <body>
   <div id="test_basic" style="position:absolute;left:0px;">test1</div>
   <div id="test_with_negative_value" style="position:absolute;left:-20px;">test2</div>
+  <div id="test_after" style="position:absolute;left:0px;">test3</div>
   <script>
     Evidence.TestCase.extend('ÉmileTest', {
       
@@ -17,15 +18,16 @@
         var element = document.getElementById('test_basic');
         
         testcase.assertEqual('0px', element.style.left);
-        emile(element, 'left:300px', {duration: 1});
+        emile(element, 'left:300px', {duration: 0.1});
         testcase.assertEqual('0px', element.style.left);
         
         testcase.pause();
         setTimeout(function(){
           testcase.resume(function(){
+            console.log( element.style);
             testcase.assertEqual('300px', element.style.left);
           });
-        }, 10);
+        }, 250);
       },
       
       testAnimationWithNegativeValue: function(testcase) {
@@ -41,7 +43,26 @@
           });
         }, 10);
         
-      }
+      },
+      
+      testAfter: function(testcase){
+        var element = document.getElementById('test_after'),
+          after = false, optionsAfter = false;
+          
+        testcase.assert(!after);
+        testcase.assert(!optionsAfter);
+        emile(element, 'left:300px', {duration: 0.1, after:function(){ optionsAfter = true; }}, function(){ after = true; });
+        testcase.assert(!after);
+        testcase.assert(!optionsAfter);
+        
+        testcase.pause();
+        setTimeout(function(){
+          testcase.resume(function(){
+            testcase.assert(after);
+            testcase.assert(optionsAfter);
+          });
+        }, 250);
+      },
     });
   </script>
 </body>

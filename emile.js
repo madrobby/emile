@@ -34,7 +34,7 @@
     return rules;
   }  
   
-  container[emile] = function(el, style, opts){
+  container[emile] = function(el, style, opts, after){
     el = typeof el == 'string' ? document.getElementById(el) : el;
     opts = opts || {};
     var target = normalize(style), comp = el.currentStyle ? el.currentStyle : getComputedStyle(el, null),
@@ -45,7 +45,7 @@
       var time = +new Date, pos = time>finish ? 1 : (time-start)/dur;
       for(prop in target)
         el.style[prop] = target[prop].f(current[prop].v,target[prop].v,easing(pos)) + target[prop].u;
-      if(time>finish) { clearInterval(interval); opts.after && opts.after(); }
+      if(time>finish) { clearInterval(interval); opts.after && opts.after(); after && setTimeout(after,1); }
     },10);
   }
 })('emile', this);

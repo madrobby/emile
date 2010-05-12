@@ -27,18 +27,18 @@ Also see the video of my presentation at Fronteers 2009:
 
 One method:
 
-    emile(element, style, options)
+    emile(element, style, options, after)
 
 **Parameters**
 
    * element (id | element) - element to which the animation will be applied
    * style (String) - style which will be applied after the animation is finished
       * for some properties you'll need to define defaults on your page's css
-   * options (Object) - the following options are available
+   * options (Object) - optional; the following options are available
       * duration (Number) - duration of the animation in milliseconds
       * after (Function) - a function which will be executed after the animation is finished
       * easing (Function) - easing function for the animation. Receives one argument pos which indicates position in time between animation's start and end
-
+   * after (Function) - optional; a callback that will be excuted after everything is done (in addition to options.after)
 
 ### License ###
 
