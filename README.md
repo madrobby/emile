@@ -43,8 +43,9 @@ One method:
 
     emile('example', {
       left: 100,
+      opacity: 1,
       duration: 500,
-      easing: 'bounce',
+      easing: easeFn,
       after: function () {
         console.log('done!');
       }
