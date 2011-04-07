@@ -1,69 +1,86 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE HTML>
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
   <title>Émile unit tests</title>
-  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <link rel="stylesheet" href="../build/sink/src/sink.css" type="text/css">
+  <style type="text/css">
+    #fixtures {
+      position: absolute;
+      top: -999em;
+    }
+  </style>
   <script src="../emile.js"></script>
-  <script src="evidence.js"></script>
+  <script src="../build/sink/src/sink.js"></script>
 </head>
 <body>
-  <div id="test_basic" style="position:absolute;left:0px;">test1</div>
-  <div id="test_with_negative_value" style="position:absolute;left:-20px;">test2</div>
-  <div id="test_after" style="position:absolute;left:0px;">test3</div>
+  <div id="fixtures">
+    <div id="test_basic" style="position:absolute;left:0px;">test1</div>
+    <div id="test_with_negative_value" style="position:absolute;left:-20px;">test2</div>
+    <div id="test_after" style="position:absolute;left:0px;">test3</div>
+  </div>
+  <h1>Émile unit tests</h1>
+  <ol id="tests"></ol>
   <script>
-    Evidence.TestCase.extend('ÉmileTest', {
-      
-      testBasicAnimation: function(testcase){
+
+    sink('Basic', function (test, ok, before, after) {
+
+      test('basic', 3, function () {
         var element = document.getElementById('test_basic');
-        
-        testcase.assertEqual('0px', element.style.left);
-        emile(element, 'left:300px', {duration: 0.1});
-        testcase.assertEqual('0px', element.style.left);
-        
-        testcase.pause();
+        ok('0px' == element.style.left, 'element is 0px');
+        emile(element, {
+          left: 300,
+          duration: 100
+        });
+        ok('0px' == element.style.left, 'element still 0px');
         setTimeout(function(){
-          testcase.resume(function(){
-            console.log( element.style);
-            testcase.assertEqual('300px', element.style.left);
-          });
+          ok('300px' == element.style.left, 'element is 300px');
         }, 250);
-      },
-      
-      testAnimationWithNegativeValue: function(testcase) {
+      });
+
+      test('negative values', 3, function () {
         var element = document.getElementById('test_with_negative_value');
-        testcase.assertEqual('-20px', element.style.left);
-        emile(element, 'left:-10px', {duration: 1});
-        testcase.assertEqual('-20px', element.style.left);
-        
-        testcase.pause();
+        ok('-20px' == element.style.left, 'element is -20px');
+        emile(element, {
+          left: -10,
+          duration: 1
+        });
+        ok('-20px' == element.style.left, 'element is still -20px');
+
         setTimeout(function(){
-          testcase.resume(function(){
-            testcase.assertEqual('-10px', element.style.left);
-          });
-        }, 10);
-        
-      },
-      
-      testAfter: function(testcase){
+          ok('-10px' == element.style.left, 'element is -10px');
+        }, 100);
+
+      });
+
+      test('after callbacks', 6, function () {
         var element = document.getElementById('test_after'),
-          after = false, optionsAfter = false;
-          
-        testcase.assert(!after);
-        testcase.assert(!optionsAfter);
-        emile(element, 'left:300px', {duration: 0.1, after:function(){ optionsAfter = true; }}, function(){ after = true; });
-        testcase.assert(!after);
-        testcase.assert(!optionsAfter);
-        
-        testcase.pause();
+            after = false, optionsAfter = false;
+
+        ok(!after, 'no after');
+        ok(!optionsAfter, 'no options after');
+        emile(element, {
+          left: '300px',
+          duration: 50,
+          after: function () {
+            optionsAfter = true;
+          }
+        },
+        function () {
+          after = true;
+        });
+        ok(!after, 'still no after');
+        ok(!optionsAfter, 'still no options after');
+
         setTimeout(function(){
-          testcase.resume(function(){
-            testcase.assert(after);
-            testcase.assert(optionsAfter);
-          });
+          ok(after, 'finally after');
+          ok(optionsAfter, 'finally options after');
         }, 250);
-      },
+
+      });
+
     });
+    start();
   </script>
 </body>
 </html>

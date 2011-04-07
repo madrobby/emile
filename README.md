@@ -27,20 +27,34 @@ Also see the video of my presentation at Fronteers 2009:
 
 One method:
 
-    emile(element, style, options, after)
+    emile(element, options, after)
 
 **Parameters**
 
    * element (id | element) - element to which the animation will be applied
-   * style (String) - style which will be applied after the animation is finished
+   * options (object) - style properties which will be applied after the animation is finished
       * for some properties you'll need to define defaults on your page's css
-   * options (Object) - optional; the following options are available
       * duration (Number) - duration of the animation in milliseconds
       * after (Function) - a function which will be executed after the animation is finished
       * easing (Function) - easing function for the animation. Receives one argument pos which indicates position in time between animation's start and end
    * after (Function) - optional; a callback that will be excuted after everything is done (in addition to options.after)
 
+### Example ###
+
+    emile('example', {
+      left: 100,
+      duration: 500,
+      easing: 'bounce',
+      after: function () {
+        console.log('done!');
+      }
+    });
+
 ### License ###
 
 Émile is is licensed under the terms of the MIT License, see the included MIT-LICENSE file.
 Émile borrows its name from <http://en.wikipedia.org/wiki/Émile_Cohl>.
+
+### Contributors ###
+* [Thomas Fuchs](https://github.com/madrobby/emile/commits/master?author=madrobby)
+* [Dustin Diaz](https://github.com/madrobby/emile/commits/master?author=ded)

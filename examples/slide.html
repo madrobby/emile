@@ -1,51 +1,99 @@
 <!DOCTYPE html>
 <html>
-	<head>
-		<title>Slide Example</title>
-		<meta name="viewport" content="width=320, user-scalable=no">
-		<style type="text/css" media="screen">
-			body {
-				margin:0;
-				padding:0;
-				background:#000;
-			}
-			#container {
-				overflow:hidden;
-				position:absolute;
-				left:0;
-				top:0;
-				width:320px;
-				height:480px;
-			}
-			#card {
-				position:absolute;
-				left:0;
-				top:0;
-				width:320px;
-				height:480px;
-				background:#fff;
-			}
-			h1 {
-				text-align:center;
-			}
-			button {
-				display:block;
-				font-size:2em;
-				width:280px;
-				margin:0 auto 20px auto;
-			}
-		</style>
-	</head>
-	<body>
-		<div id="container">
-			<div id="card">
-				<h1>Slip'n'Slide Demo!</h1>
-				<button onclick="emile('card', 'left:-320px', {duration: 800});">slide left</button>
-				<button onclick="emile('card', 'left:640px', {duration: 800});">slide right</button>
-				<button onclick="emile('card', 'top:-480px', {duration: 800});">slide up</button>
-				<button onclick="emile('card', 'top:960px', {duration: 800});">slide down</button>
-			</div>
-		</div>
-		<script src="../emile.min.js" type="text/javascript" charset="utf-8"></script>
-	</body>
+  <head>
+    <title>Slide Example</title>
+    <meta name="viewport" content="width=320, user-scalable=no">
+    <meta http-equiv="Content-type" content="text/html; charset=utf-8">
+    <style type="text/css" media="screen">
+      html,body {
+        margin: 0;
+        padding: 0;
+        height: 100%;
+        overflow: hidden;
+      }
+      p {
+        margin: 0;
+        font: 100 50px 'helvetica neue', helvetica, arial;
+        opacity: 0;
+        color: #333;
+        filter: alpha(opacity=0);
+        position: relative;
+        top: 10px;
+      }
+      #anim {
+        text-align: center;
+        position: relative;
+        width: 750px;
+        margin: 0 auto;
+        top: 100px;
+        height: 100px;
+      }
+      #anim div {
+        position: absolute;
+        width: 10px;
+        height: 10px;
+        background: red;
+      }
+      #nw {
+        left: 0;
+        top: 0;
+        background: green;
+      }
+      #ne {
+        top: 0;
+        right: 0;
+        background: blue;
+      }
+      #sw {
+        bottom: 0;
+        left: 0;
+        background: orange;
+      }
+      #se {
+        bottom: 0;
+        right: 0;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="anim">
+      <p id="emile">Émile</p>
+      <div id="nw"></div>
+      <div id="ne"></div>
+      <div id="sw"></div>
+      <div id="se"></div>
+    </div>
+    <script src="../src/emile.js" type="text/javascript"></script>
+    <script type="text/javascript">
+      emile('nw', {
+        left: 500,
+        top: 100,
+        "background-color": '#ff00ff',
+        duration: 1000
+      });
+      emile('ne', {
+        right: 500,
+        top: 100,
+        "background-color": '#0000ff',
+        duration: 1000
+      });
+      emile('sw', {
+        left: 500,
+        bottom: 100,
+        "background-color": '#00ff00',
+        duration: 1000
+      });
+      emile('se', {
+        right: 500,
+        bottom: 100,
+        'background-color': '#00ccff',
+        duration: 1000
+      }, function () {
+        emile('emile', {
+          opacity: 1,
+          duration: 1000
+        });
+      });
+    </script>
+  </body>
 </html>
