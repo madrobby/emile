@@ -12,7 +12,7 @@
       pixelProps = 'top bottom left right ' +
         'borderWidth borderBottomWidth borderLeftWidth borderRightWidth borderTopWidth ' +
         'borderSpacing borderRadius ' +
-        'marginBottom marginLeft marginRight marginTop' +
+        'marginBottom marginLeft marginRight marginTop ' +
         'width height ' +
         'maxHeight maxWidth minHeight minWidth ' +
         'paddingBottom paddingLeft paddingRight paddingTop ' +
