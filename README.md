@@ -51,6 +51,15 @@ One method:
       }
     });
 
+### Building ###
+
+Building Émile requires GNU 'make' and [Node.js](http://nodejs.org) to run the [JSHint](http://jshint.com) linter and [Uglify](https://github.com/mishoo/UglifyJS) compiler. It's then quite simple:
+
+    git clone git://github.com/madrobby/emile.git
+    cd emmile
+    git submodule update --init
+    make
+
 ### License ###
 
 Émile is is licensed under the terms of the MIT License, see the included MIT-LICENSE file.
