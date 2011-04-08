@@ -1,5 +1,20 @@
 !function (context) {
   var parseEl = document.createElement('div'),
+      prefix = function() {
+        var prefixes = ["webkit", "Moz", "O"],
+        i = 3,
+        prefix;
+        while (i--) {
+          prefix = prefixes[i];
+          parseEl.style.cssText = "-" + prefix.toLowerCase() +
+          "-transition-property:opacity;";
+          if (typeof parseEl.style[prefix + "TransitionProperty"] != "undefined") {
+            return prefix;
+          }
+        }
+        return prefix;
+      }(),
+      transitionEnd = /^w/.test(prefix) ? 'webkitTransitionEnd' : 'transitionend';
       d = /\d+$/,
       animationProperties = {},
       baseProps = 'backgroundColor borderBottomColor borderLeftColor ' +
@@ -134,6 +149,33 @@
     }, 10);
   }
 
+  function nativeAnim(el, o, opts, after) {
+    var props = [],
+        styles = [],
+        el = document.getElementById(el),
+        duration = opts.duration || 1000,
+        duration = duration + 'ms';
+        easing = opts.easing || 'ease-out';
+    (opts.after || after) && el.addEventListener(transitionEnd, function f() {
+      opts.after && opts.after();
+      after && after();
+      el.removeEventListener(transitionEnd, f, true);
+    }, true);
+
+    setTimeout(function () {
+      for (var k in o) {
+        o.hasOwnProperty(k) && props.push(camelToDash(k) + ' ' + duration + ' ' + easing);
+      }
+      props = props.join(',');
+      el.style[prefix + 'Transition'] = props;
+        for (var k in o) {
+          var v = (camelize(k) in animationProperties) && d.test(o[k]) ? o[k] + 'px' : o[k];
+          o.hasOwnProperty(k) && (el.style[camelize(k)] = v);
+        }
+    }, 10);
+
+  }
+
   function emile(el, o, after) {
     var opts = {
       duration: o.duration,
@@ -143,6 +185,9 @@
     delete o.duration;
     delete o.easing;
     delete o.after;
+    if (prefix) {
+      return nativeAnim(el, o, opts, after);
+    }
     var serial = serialize(o, function (k, v) {
       k = camelToDash(k);
       return (camelize(k) in animationProperties) && d.test(v) ?

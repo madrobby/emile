@@ -32,26 +32,27 @@
         position: absolute;
         width: 10px;
         height: 10px;
-        background: red;
+        background-color: red;
       }
       #nw {
         left: 0;
         top: 0;
-        background: green;
+        background-color: green;
       }
       #ne {
         top: 0;
         right: 0;
-        background: blue;
+        background-color: blue;
       }
       #sw {
         bottom: 0;
         left: 0;
-        background: orange;
+        background-color: orange;
       }
       #se {
         bottom: 0;
         right: 0;
+        background-color: red;
       }
     </style>
   </head>
@@ -66,27 +67,27 @@
     <script src="../src/emile.js" type="text/javascript"></script>
     <script type="text/javascript">
       emile('nw', {
+        "background-color": '#ff00ff',
         left: 500,
         top: 100,
-        "background-color": '#ff00ff',
         duration: 1000
       });
       emile('ne', {
+        "background-color": '#0000ff',
         right: 500,
         top: 100,
-        "background-color": '#0000ff',
         duration: 1000
       });
       emile('sw', {
+        "background-color": '#00ff00',
         left: 500,
         bottom: 100,
-        "background-color": '#00ff00',
         duration: 1000
       });
       emile('se', {
+        'background-color': '#00ccff',
         right: 500,
         bottom: 100,
-        'background-color': '#00ccff',
         duration: 1000
       }, function () {
         emile('emile', {
