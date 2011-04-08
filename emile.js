@@ -185,7 +185,7 @@
     delete o.duration;
     delete o.easing;
     delete o.after;
-    if (prefix) {
+    if (prefix && (typeof opts.easing !== 'function')) {
       return nativeAnim(el, o, opts, after);
     }
     var serial = serialize(o, function (k, v) {
