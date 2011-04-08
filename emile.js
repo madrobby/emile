@@ -4,6 +4,10 @@
   */
 !function (context) {
   var parseEl = document.createElement('div'),
+      prefixes = ["webkit", "Moz", "O"],
+      j = 3,
+      prefix,
+      _prefix,
       d = /\d+$/,
       animationProperties = {},
       baseProps = 'backgroundColor borderBottomColor borderLeftColor ' +
@@ -21,7 +25,14 @@
 
       props = (baseProps + ' ' + pixelProps).split(' ');
 
-
+  while (j--) {
+    _prefix = prefixes[j];
+    parseEl.style.cssText = "-" + _prefix.toLowerCase() + "-transition-property:opacity;";
+    if (typeof parseEl.style[_prefix + "TransitionProperty"] != "undefined") {
+      prefix = _prefix;
+    }
+  }
+  var transitionEnd = /^w/.test(prefix) ? 'webkitTransitionEnd' : 'transitionend';
   for (var p = pixelProps.split(' '), i = p.length; i--;) {
     animationProperties[p[i]] = 1;
   }
@@ -113,7 +124,6 @@
   }
 
   function _emile(el, style, opts, after) {
-    el = typeof el == 'string' ? document.getElementById(el) : el;
     opts = opts || {};
     var target = normalize(style),
         comp = el.currentStyle ? el.currentStyle : getComputedStyle(el, null),
@@ -138,7 +148,35 @@
     }, 10);
   }
 
+  function nativeAnim(el, o, opts, after) {
+    var props = [],
+        styles = [],
+        duration = opts.duration || 1000,
+        easing = opts.easing || 'ease-out';
+    duration = duration + 'ms';
+    (opts.after || after) && el.addEventListener(transitionEnd, function f() {
+      opts.after && opts.after();
+      after && after();
+      el.removeEventListener(transitionEnd, f, true);
+    }, true);
+
+    setTimeout(function () {
+      var k;
+      for (k in o) {
+        o.hasOwnProperty(k) && props.push(camelToDash(k) + ' ' + duration + ' ' + easing);
+      }
+      props = props.join(',');
+      el.style[prefix + 'Transition'] = props;
+      for (k in o) {
+        var v = (camelize(k) in animationProperties) && d.test(o[k]) ? o[k] + 'px' : o[k];
+        o.hasOwnProperty(k) && (el.style[camelize(k)] = v);
+      }
+    }, 10);
+
+  }
+
   function emile(el, o, after) {
+    el = typeof el == 'string' ? document.getElementById(el) : el;
     var opts = {
       duration: o.duration,
       easing: o.easing,
@@ -147,6 +185,9 @@
     delete o.duration;
     delete o.easing;
     delete o.after;
+    if (prefix) {
+      return nativeAnim(el, o, opts, after);
+    }
     var serial = serialize(o, function (k, v) {
       k = camelToDash(k);
       return (camelize(k) in animationProperties) && d.test(v) ?
