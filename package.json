@@ -1,0 +1,13 @@
+{
+  "name": "emile",
+  "description": "no-thrills stand-alone CSS animation JavaScript framework",
+  "version": "1.0.1",
+  "homepage": "https://github.com/ded/emile",
+  "authors": ["Thomas Fuchs", "Dustin Diaz"],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ded/emile.git"
+  },
+  "main": "./emile.js",
+  "ender": "./src/ender.js"
+}
