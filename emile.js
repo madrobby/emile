@@ -2,6 +2,7 @@
 // Licensed under the terms of the MIT license.
 
 (function(emile, container){
+	
   var parseEl = document.createElement('div'),
     props = ('backgroundColor borderBottomColor borderBottomWidth borderLeftColor borderLeftWidth '+
     'borderRightColor borderRightWidth borderSpacing borderTopColor borderTopWidth bottom color fontSize '+
@@ -32,7 +33,17 @@
     css = parseEl.childNodes[0].style;
     while(i--) if(v = css[props[i]]) rules[props[i]] = parse(v);
     return rules;
-  }  
+  }
+
+	// request animation step
+	var req_frame = window.requestAnimationFrame    || 
+              window.webkitRequestAnimationFrame  || 
+              window.mozRequestAnimationFrame     || 
+              window.oRequestAnimationFrame       || 
+              window.msRequestAnimationFrame      || 
+              function(callback, element){
+                window.setTimeout(callback, 1000 / 60);
+              };
   
   container[emile] = function(el, style, opts, after){
     el = typeof el == 'string' ? document.getElementById(el) : el;
@@ -41,11 +52,14 @@
       prop, current = {}, start = +new Date, dur = opts.duration||200, finish = start+dur, interval,
       easing = opts.easing || function(pos){ return (-Math.cos(pos*Math.PI)/2) + 0.5; };
     for(prop in target) current[prop] = parse(comp[prop]);
-    interval = setInterval(function(){
+    on_animate = function(){
       var time = +new Date, pos = time>finish ? 1 : (time-start)/dur;
       for(prop in target)
         el.style[prop] = target[prop].f(current[prop].v,target[prop].v,easing(pos)) + target[prop].u;
-      if(time>finish) { clearInterval(interval); opts.after && opts.after(); after && setTimeout(after,1); }
-    },10);
+      if(time>finish) { opts.after && opts.after(); after && setTimeout(after,1); }
+      else { req_frame( on_animate, el ); }
+    };
+    
+    req_frame( on_animate, el );
   }
 })('emile', this);
