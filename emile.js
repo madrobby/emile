@@ -9,7 +9,10 @@
     'maxWidth minHeight minWidth opacity outlineColor outlineOffset outlineWidth paddingBottom paddingLeft '+
     'paddingRight paddingTop right textIndent top width wordSpacing zIndex').split(' ');
 
-  function interpolate(source,target,pos){ return (source+(target-source)*pos).toFixed(3); }
+  function interpolate(source,target,pos){
+    if(source == "auto") source = 0;
+    return (source+(target-source)*pos).toFixed(3);
+  }
   function s(str, p, c){ return str.substr(p,c||1); }
   function color(source,target,pos){
     var i = 2, j, c, tmp, v = [], r = [];
@@ -20,20 +23,20 @@
     while(j--) { tmp = ~~(v[j+3]+(v[j]-v[j+3])*pos); r.push(tmp<0?0:tmp>255?255:tmp); }
     return 'rgb('+r.join(',')+')';
   }
-  
+
   function parse(prop){
     var p = parseFloat(prop), q = prop.replace(/^[\-\d\.]+/,'');
     return isNaN(p) ? { v: q, f: color, u: ''} : { v: p, f: interpolate, u: q };
   }
-  
+
   function normalize(style){
     var css, rules = {}, i = props.length, v;
     parseEl.innerHTML = '<div style="'+style+'"></div>';
     css = parseEl.childNodes[0].style;
     while(i--) if(v = css[props[i]]) rules[props[i]] = parse(v);
     return rules;
-  }  
-  
+  }
+
   container[emile] = function(el, style, opts, after){
     el = typeof el == 'string' ? document.getElementById(el) : el;
     opts = opts || {};
